@@ -30,3 +30,43 @@ def save_weights(self, filename):
 def load_weights(self, filename):
     with open(filename, "r") as f:
         self.bias = float(f.readline())
+    self.weights = [float(line) for line in f.readlines()]
+
+# and
+# X Y -> Z
+# 0 0 -> 0
+# 0 1 -> 0
+# 1 0 -> 0
+# 1 1 -> 1
+
+#Ejemplo de uso
+perceptron = Perceptron(2)
+
+#si existe el archivo, cargar los pesos
+try:
+    perceptron.load_weights("weights.txt")
+except:
+    print("No se puede cargar los pesos")
+    print("Entrenando . . .")
+
+    for _ in range(1000):
+        inputs = [0, 0]
+        perceptron.train(inputs, 0)
+        inputs = [0, 1]
+        perceptron.train(inputs, 0)
+        inputs = [1, 0]
+        perceptron.train(inputs, 0)
+        inputs = [1, 1]
+        perceptron.train(inputs, 1)
+
+#Guardar pesos
+perceptron.save_weights("weights.txt")
+
+print("Este es el modelo entrenado: ")
+print(perceptron.get_weights())
+
+print("Prediccione: ")
+print([0, 0], "_", perceptron.predict([0, 0]))
+print([0, 1], "_", perceptron.predict([0, 1]))
+print([1, 0], "_", perceptron.predict([1, 0]))
+print([1, 1], "_", perceptron.predict([1, 1]))
